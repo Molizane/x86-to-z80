@@ -3,6 +3,7 @@
 #include "types.h"
 #include <algorithm>
 #include <vector>
+#include <stdexcept>
 
 struct z80 : ASMLine
 {
@@ -10,22 +11,18 @@ struct z80 : ASMLine
   {
     unknown,
     ret,
-    xor,
+    _xor,
     ld,
     ldxxxx,
-    call
+    call,
+	push
   };
-
-  z80(const Type t, std::string s)
-      : ASMLine(t, std::move(s))
-  {
-  }
 
   static std::string to_string(const OpCode o)
   {
     switch (o)
     {
-      case OpCode:: xor:
+      case OpCode:: _xor:
         return "xor a";
       case OpCode::ld:
         return "ld a,16";
@@ -37,6 +34,8 @@ struct z80 : ASMLine
         return "ret";
       case OpCode::unknown:
         return "unknown";
+	  case OpCode::push:
+		return "push";
     }
     return "unknown";
   }
@@ -48,8 +47,18 @@ struct z80 : ASMLine
   // , is_comparison(get_is_comparison(o))
   {
   }
+  
+  z80(const Type t, std::string s)
+      : ASMLine(t, std::move(s))
+  {
+  }
 
-
+  z80(const OpCode o, std::string s)
+      : ASMLine(Type::Instruction, to_string(o))
+      , opcode(o)
+  {
+  }
+  
   std::string to_string() const
   {
     switch (type)

@@ -118,7 +118,6 @@ namespace {
 
 
   
-  
   struct VIC_II
   {
     static constexpr uint8_t  SPRITE_ALIGNMENT          = 64;
@@ -154,7 +153,7 @@ namespace {
     }
     
     template<uint8_t r, uint8_t g, uint8_t b>
-    static auto color_comparison(const Color &lhs, const Color &rhs)
+    static bool color_comparison(const Color &lhs, const Color &rhs)
     {
       // distance between colors:
       // sqrt( (r1 - r2)^2 + (g1 - g2)^2 + (b1 - b2)^2 )
